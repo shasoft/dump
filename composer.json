@@ -1,0 +1,34 @@
+{
+    "name": "shasoft/dump",
+    "type": "library",
+    "description": "Debugging output package",
+    "keywords": [
+        "dump",
+        "debug",
+        "php"
+    ],
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "require": {
+        "illuminate/support": "*",
+        "symfony/console": "*",
+        "symfony/process": "*",
+        "symfony/var-dumper": "6.2.5",
+        "shasoft/console": "*",
+        "shasoft/filesystem": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Shasoft\\Dump\\": "classes"
+        },
+        "files": [
+            "helpers.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Shabanov Valera",
+            "email": "shasoft_dump@shasoft.com"
+        }
+    ]
+}
