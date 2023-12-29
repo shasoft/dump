@@ -231,7 +231,7 @@ if (!function_exists('s_dd')) {
     }    
     */
     // Вывод ошибки
-    function s_dump_error($title, $e)
+    function s_dump_error(string $title, $e)
     {
         if (Console::is()) {
             Console::writeLn('<title>' . $title . '</>');
@@ -268,4 +268,17 @@ if (!function_exists('s_dd')) {
         }
         s_dump($e);
     }
+    // Запуск с выводом ошибок
+    function s_dump_run(\Closure $cb)
+    {
+        try {
+			$cb();
+        } catch (\Exception $e) {
+            s_dump_error('Исключение ' . get_class($e), $e);
+            exit(1);
+        } catch (\Error $e) {
+            s_dump_error('Ошибка ' . get_class($e), $e);
+            exit(2);
+        }
+    }	
 }

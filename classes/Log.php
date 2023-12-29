@@ -7,6 +7,18 @@ use Shasoft\Filesystem\FsTransform;
 
 class Log
 {
+    // Установить обработчик аварийного завершения
+    public static function register_shutdown(): void
+    {
+        register_shutdown_function(function () {
+            $error = error_get_last();
+            if (!is_null($error)) {
+                Console::writeLn('<error>Error</>');
+                s_dump($error);
+                exit(666);
+            }
+        });
+    }
     // Установить обработчик не фатальных ошибок
     public static function set_warning_handler(): void
     {
@@ -38,7 +50,7 @@ class Log
     public static function error(string $text, int $skip = 0): void
     {
         $hasConsole = Console::is();
-        // Добавить пропуск текущего вызова
+        // Установить пропуск текущего вызова
         $skip++;
         $traces = debug_backtrace();
         foreach ($traces as $trace) {
