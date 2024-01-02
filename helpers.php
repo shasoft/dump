@@ -201,7 +201,8 @@ if (!function_exists('s_dd')) {
                 }
             }
         } else {
-            s_dump($traces);
+            array_shift($traces);
+            s_call_fn('dump', [$traces]);
         }
     }
     /*
@@ -272,7 +273,7 @@ if (!function_exists('s_dd')) {
     function s_dump_run(\Closure $cb)
     {
         try {
-			$cb();
+            $cb();
         } catch (\Exception $e) {
             s_dump_error('Исключение ' . get_class($e), $e);
             exit(1);
@@ -280,5 +281,5 @@ if (!function_exists('s_dd')) {
             s_dump_error('Ошибка ' . get_class($e), $e);
             exit(2);
         }
-    }	
+    }
 }
