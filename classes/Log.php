@@ -67,10 +67,19 @@ class Log
                         Console::writeLn("\n" . $text . "\n");
                         Console::writeLn('  Файл: <file>' . $file . '</>:' . $line);
                         Console::writeLn('Стек вызовов:');
+                    } else {
+                        echo "<div>";
+                        echo '<h3 style="color:red">Ошибка!</h3>';
+                        echo '<div style="color:red">' . strip_tags($text) . '</div>';
+                        echo '<div>  Файл: <strong>' . $file . '</strong>:' . $line . '</div>';
+                        echo 'Стек вызовов:<br/>';
+                        echo "</div>";
                     }
                 }
                 if ($hasConsole) {
                     Console::writeLn('  Файл: <file>' . $file . '</>:' . $line);
+                } else {
+                    echo '<div style="padding-left:16px">Файл: <file>' . $file . '</>:' . $line . '</div>';
                 }
             }
             $skip--;
