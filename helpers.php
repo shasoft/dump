@@ -76,11 +76,16 @@ if (!function_exists('s_dd')) {
     // Вызов функции и вывод на экран строки из которой она вызвана
     function s_call_fn(string|\Closure|null $fn, array $args): void
     {
+        //
+        $colorConsole = '<fg=bright-blue>';
+        $isConsole = Console::is();
+        if ($isConsole) {
+            Console::writeLn($colorConsole . '*' . str_repeat('>', 80) . '</>');
+        }
         // Получить номер строки
         $trace = s_get_trace_call(2);
         if ($trace !== false) {
 
-            $isConsole = Console::is();
             if ($isConsole) {
                 /*
                 if (is_string($fn) && $fn == 'dd') {
@@ -100,7 +105,9 @@ if (!function_exists('s_dd')) {
         if (is_callable($fn)) {
             call_user_func_array($fn, $args);
         }
-        if (!$isConsole) {
+        if ($isConsole) {
+            Console::writeLn($colorConsole . '*' . str_repeat('<', 80) . '</>');
+        } else {
             echo "</div>";
         }
     }
