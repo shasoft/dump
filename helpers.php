@@ -74,7 +74,7 @@ if (!function_exists('s_dd')) {
     }
 
     // Вызов функции и вывод на экран строки из которой она вызвана
-    function s_call_fn(string|\Closure|null $fn, array $args): void
+    function s_call_fn(string|\Closure|null $fn, array $args, int $skipTraces = 0): void
     {
         //
         $colorConsole = '<fg=bright-blue>';
@@ -83,7 +83,7 @@ if (!function_exists('s_dd')) {
             Console::writeLn($colorConsole . '*' . str_repeat('>', 80) . '</>');
         }
         // Получить номер строки
-        $trace = s_get_trace_call(2);
+        $trace = s_get_trace_call(2 + $skipTraces);
         if ($trace !== false) {
 
             if ($isConsole) {
@@ -193,9 +193,12 @@ if (!function_exists('s_dd')) {
         }, []);
     }
     // Вывести стек вызовов
-    function s_trace()
+    function s_trace(int $index = 0)
     {
         $traces = \debug_backtrace(0);
+        if ($index > 0) {
+            $traces = array_slice($traces, $index);
+        }
         //s_dd($traces);
         if (Console::is()) {
             foreach ($traces as $trace) {
@@ -254,8 +257,11 @@ if (!function_exists('s_dd')) {
             Console::writeLn('В <title>VSCode</>:');
             Console::writeLn(' 1. Нажмите <info>Ctrl+P</> и <info>Ctrl+V</> для перехода к файлу');
             Console::writeLn(' 2. Нажмите <info>Ctrl+G</> и введите номер строки <info>' . $e->getLine() . '</> для перехода к строке');
+            Console::writeLn('');
+            Console::writeLn('<title>Trace</>:');
+            s_trace();
             // Копировать в буфер обмена
-            Console::copyToClipboard(FsTransform::get($e->getFile()));
+            //Console::copyToClipboard(FsTransform::get($e->getFile()));
         } else {
             echo '<h1 style="color:red">' . $title . '</h1>';
             echo "<div><strong>Сообщение</strong>: <strong style=\"color:#DE3163\">" . $e->getMessage() . "</strong></div><br/>";

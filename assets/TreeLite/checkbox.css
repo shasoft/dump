@@ -1,0 +1,14 @@
+.TreeLite_Node {
+        margin-left: 36px;
+}
+.TreeLite_Content {
+        margin-left: 36px;
+}
+.TreeLite_IsRoot { margin-left: 0; }
+
+.TreeLite_Container input {
+    width: 14px;
+    height: 14px;
+    float: left;
+    margin: 2px;
+}

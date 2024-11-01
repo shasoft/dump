@@ -1,0 +1,71 @@
+.TreeLite_Container {
+	padding: 0;
+	margin: 0;
+}
+
+.TreeLite_Container li {
+	list-style-type: none;
+}
+
+/* indent for all tree children excepts root */
+.TreeLite_Node {
+    margin-left: 18px;
+    zoom: 1;
+
+}
+
+.TreeLite_IsRoot {
+    margin-left: 0;
+}
+ 
+.TreeLite_ExpandOpen .TreeLite_Expand {
+    background-image: url(img/minus.gif);
+}
+ 
+/* closed is higher priority than open */
+.TreeLite_ExpandClosed .TreeLite_Expand {
+    background-image: url(img/plus.gif);
+}
+ 
+/* highest priority */
+.TreeLite_ExpandLeaf .TreeLite_Expand {
+    background-image: url(img/leaf.gif);
+}
+
+.TreeLite_Content {
+    min-height: 18px;
+    margin-left:18px;
+}
+* html  .TreeLite_Content {
+    height: 18px;
+}
+
+
+.TreeLite_ExpandLoading   {
+    width: 18px;
+    height: 18px;
+    float: left;
+    background-image: url(img/loading.gif);
+}
+
+.TreeLite_Expand {
+    width: 18px;
+    height: 18px;
+    float: left;
+}
+
+
+.TreeLite_ExpandOpen .TreeLite_Container {
+        display: block;
+}
+
+.TreeLite_ExpandClosed .TreeLite_Container {
+        display: none;
+}
+
+.TreeLite_ExpandOpen .TreeLite_Expand, .TreeLite_ExpandClosed .TreeLite_Expand {
+        cursor: pointer;
+}
+.TreeLite_ExpandLeaf .TreeLite_Expand {
+        cursor: auto;
+}

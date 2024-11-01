@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Tree Example</title>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link rel="stylesheet" media="all" href="grid.css" />
+    <script type="text/javascript" src="tree_toggle.js"></script>
+</head>
+
+<body>
+    <a href="https://javascript.ru/ui/tree">Отсюда</a>
+    <div>
+        <div>Tree</div>
+        <ul class="TreeLite_Container" onclick="TreeLite_tree_toggle(arguments[0])">
+            <li class="TreeLite_IsRoot TreeLite_Node TreeLite_IsLast TreeLite_ExpandClosed">
+                <div class="TreeLite_Expand"></div>
+                <div class="TreeLite_Content">Root</div>
+                <ul class="TreeLite_Container">
+                    <li class="TreeLite_Node TreeLite_ExpandOpen">
+                        <div class="TreeLite_Expand"></div>
+                        <div class="TreeLite_Content">Item 1</div>
+                        <ul class="TreeLite_Container">
+                            <li class="TreeLite_Node TreeLite_ExpandLeaf TreeLite_IsLast">
+                                <div class="TreeLite_Expand"></div>
+                                <div class="TreeLite_Content">Item 1.2</div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="TreeLite_Node TreeLite_ExpandLeaf TreeLite_IsLast">
+                        <div class="TreeLite_Expand"></div>
+                        <div class="TreeLite_Content">Item 2</div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+
+
+</body>
+
+</html>
