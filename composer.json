@@ -9,7 +9,6 @@
   ],
   "license": "MIT",
   "require": {
-    "illuminate/support": "*",
     "shasoft/terminal-write-php": "*",
     "symfony/var-dumper": "6.2.5",
     "shasoft/filesystem": "*"
