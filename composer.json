@@ -10,10 +10,8 @@
   "license": "MIT",
   "require": {
     "illuminate/support": "*",
-    "symfony/console": "*",
-    "symfony/process": "*",
+    "shasoft/terminal-write-php": "*",
     "symfony/var-dumper": "6.2.5",
-    "shasoft/console": "*",
     "shasoft/filesystem": "*"
   },
   "autoload": {

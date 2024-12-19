@@ -2,8 +2,8 @@
 // Дополнительные функции
 use Shasoft\Dump\Log;
 use Shasoft\Dump\Browse;
-use Shasoft\Console\Console;
 use Shasoft\Filesystem\Path;
+use Shasoft\Terminal\Terminal;
 use Shasoft\Filesystem\FsTransform;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
@@ -27,9 +27,9 @@ if (!function_exists('s_dd')) {
                     E_DEPRECATED => 'E_DEPRECATED',
                     E_USER_DEPRECATED => 'E_USER_DEPRECATED'
                 );
-                if (Console::is()) {
-                    Console::writeLn('<warning>' . $errors[$errno] . '</>:  ' . $message);
-                    Console::writeLn('    <file>' . FsTransform::get($errorFile) . '</>:' . $errorLine);
+                if (Terminal::has()) {
+                    Terminal::writeLn('<warning>' . $errors[$errno] . '</>:  ' . $message);
+                    Terminal::writeLn('    <file>' . FsTransform::get($errorFile) . '</>:' . $errorLine);
                 } else {
                     s_dump($errors[$errno], FsTransform::get($errorFile));
                 }
@@ -78,9 +78,9 @@ if (!function_exists('s_dd')) {
     {
         //
         $colorConsole = '<fg=bright-blue>';
-        $isConsole = Console::is();
+        $isConsole = Terminal::has();
         if ($isConsole) {
-            Console::writeLn($colorConsole . '*' . str_repeat('>', 80) . '</>');
+            Terminal::writeLn($colorConsole . '*' . str_repeat('>', 80) . '</>');
         }
         // Получить номер строки
         $trace = s_get_trace_call(2 + $skipTraces);
@@ -90,13 +90,13 @@ if (!function_exists('s_dd')) {
                 /*
                 if (is_string($fn) && $fn == 'dd') {
                     // Вывести сообщение
-                    Console::writeLn('<title>Имя файла скопировано в буфер обмена</>');
+                    Terminal::writeLn('<title>Имя файла скопировано в буфер обмена</>');
                     // Копировать имя файла в буфер обмена
                     Console::copyToClipboard($filepath);
                 }
                 //*/
                 // Вывести на экран имя файла
-                Console::writeLn('file: <file>' . $trace['file'] . ":" . $trace['line'] . '</>');
+                Terminal::writeLn('file: <file>' . $trace['file'] . ":" . $trace['line'] . '</>');
             } else {
                 echo "<div style='border:1px solid red;padding:0'>";
                 echo '<div>file: <b style="color:green">' . $trace['file'] . '</b>:<b style="color:green">' . $trace['line'] . '</b></div>';
@@ -106,7 +106,7 @@ if (!function_exists('s_dd')) {
             call_user_func_array($fn, $args);
         }
         if ($isConsole) {
-            Console::writeLn($colorConsole . '*' . str_repeat('<', 80) . '</>');
+            Terminal::writeLn($colorConsole . '*' . str_repeat('<', 80) . '</>');
         } else {
             echo "</div>";
         }
@@ -136,7 +136,7 @@ if (!function_exists('s_dd')) {
     {
         s_call_fn(function (...$args) {
             foreach ($args as $arg) {
-                Console::writeLn("\t" . (string)$arg);
+                Terminal::writeLn("\t" . (string)$arg);
             }
         }, $args);
     }
@@ -188,7 +188,7 @@ if (!function_exists('s_dd')) {
     function s_stop()
     {
         s_call_fn(function () {
-            Console::writeLn('<fg=red>stop!</>');
+            Terminal::writeLn('<fg=red>stop!</>');
             exit(1);
         }, []);
     }
@@ -200,13 +200,13 @@ if (!function_exists('s_dd')) {
             $traces = array_slice($traces, $index);
         }
         //s_dd($traces);
-        if (Console::is()) {
+        if (Terminal::has()) {
             foreach ($traces as $trace) {
                 if (array_key_exists('file', $trace)) {
-                    Console::writeLn('<file>' . FsTransform::get($trace['file']) . ':' . $trace['line'] . '</>');
+                    Terminal::writeLn('<file>' . FsTransform::get($trace['file']) . ':' . $trace['line'] . '</>');
                 } else {
                     if (array_key_exists('class', $trace)) {
-                        Console::writeLn($trace['class'] . $trace['type'] . $trace['function']);
+                        Terminal::writeLn($trace['class'] . $trace['type'] . $trace['function']);
                     }
                 }
             }
@@ -244,21 +244,21 @@ if (!function_exists('s_dd')) {
     // Вывод ошибки
     function s_dump_error(string $title, $e)
     {
-        if (Console::is()) {
-            Console::writeLn('<title>' . $title . '</>');
-            Console::writeLn('Сообщение: <error>' . $e->getMessage() . '</>');
-            Console::writeLn('  Файл: <file>' . $e->getFile() . '</>:' . $e->getLine());
-            Console::writeLn('Стек вызовов:');
+        if (Terminal::has()) {
+            Terminal::writeLn('<title>' . $title . '</>');
+            Terminal::writeLn('Сообщение: <error>' . $e->getMessage() . '</>');
+            Terminal::writeLn('  Файл: <file>' . $e->getFile() . '</>:' . $e->getLine());
+            Terminal::writeLn('Стек вызовов:');
             foreach ($e->getTrace() as $trace) {
-                Console::writeLn('  <file>' . Log::trace_file($trace) . '</>:' . Log::trace_line($trace));
+                Terminal::writeLn('  <file>' . Log::trace_file($trace) . '</>:' . Log::trace_line($trace));
             }
             // Вывести справочное сообщение
-            Console::writeLn('');
-            Console::writeLn('В <title>VSCode</>:');
-            Console::writeLn(' 1. Нажмите <info>Ctrl+P</> и <info>Ctrl+V</> для перехода к файлу');
-            Console::writeLn(' 2. Нажмите <info>Ctrl+G</> и введите номер строки <info>' . $e->getLine() . '</> для перехода к строке');
-            Console::writeLn('');
-            Console::writeLn('<title>Trace</>:');
+            Terminal::writeLn('');
+            Terminal::writeLn('В <title>VSCode</>:');
+            Terminal::writeLn(' 1. Нажмите <info>Ctrl+P</> и <info>Ctrl+V</> для перехода к файлу');
+            Terminal::writeLn(' 2. Нажмите <info>Ctrl+G</> и введите номер строки <info>' . $e->getLine() . '</> для перехода к строке');
+            Terminal::writeLn('');
+            Terminal::writeLn('<title>Trace</>:');
             s_trace();
             // Копировать в буфер обмена
             //Console::copyToClipboard(FsTransform::get($e->getFile()));

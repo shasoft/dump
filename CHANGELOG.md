@@ -19,3 +19,6 @@ CHANGE LOG
 
 ## v1.0.5 (2024-06-10)
 * Корректировка файла composer.json
+
+## v1.1
+* Перешёл на новый пакет вывода в консоль [shasoft/terminal-write-php](https://github.com/shasoft/terminal-write-php)
