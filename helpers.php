@@ -29,7 +29,7 @@ if (!function_exists('s_dd')) {
                 );
                 if (Terminal::has()) {
                     Terminal::writeLn('<warning>' . $errors[$errno] . '</>:  ' . $message);
-                    Terminal::writeLn('    <file>' . FsTransform::get($errorFile) . '</>:' . $errorLine);
+                    Terminal::writeLn('    <File>' . FsTransform::get($errorFile) . '</>:' . $errorLine);
                 } else {
                     s_dump($errors[$errno], FsTransform::get($errorFile));
                 }
@@ -77,7 +77,7 @@ if (!function_exists('s_dd')) {
     function s_call_fn(string|\Closure|null $fn, array $args, int $skipTraces = 0): void
     {
         //
-        $colorConsole = '<fg=bright-blue>';
+        $colorConsole = '<Info>';
         $isConsole = Terminal::has();
         if ($isConsole) {
             Terminal::writeLn($colorConsole . '*' . str_repeat('>', 80) . '</>');
@@ -96,7 +96,7 @@ if (!function_exists('s_dd')) {
                 }
                 //*/
                 // Вывести на экран имя файла
-                Terminal::writeLn('file: <file>' . $trace['file'] . ":" . $trace['line'] . '</>');
+                Terminal::writeLn('file: <File>' . $trace['file'] . ":" . $trace['line'] . '</>');
             } else {
                 echo "<div style='border:1px solid red;padding:0'>";
                 echo '<div>file: <b style="color:green">' . $trace['file'] . '</b>:<b style="color:green">' . $trace['line'] . '</b></div>';
@@ -143,7 +143,8 @@ if (!function_exists('s_dd')) {
     // Функция отладки
     function s_dd(...$args): void
     {
-        s_call_fn('dd', $args);
+        s_call_fn('dump', $args);
+        exit(1);
     }
     // Функция отладки по условию
     function s_dump_has($has, ...$args): void
@@ -188,9 +189,9 @@ if (!function_exists('s_dd')) {
     function s_stop()
     {
         s_call_fn(function () {
-            Terminal::writeLn('<fg=red>stop!</>');
-            exit(1);
+            Terminal::writeLn('<Error>stop!</>');
         }, []);
+        exit(1);
     }
     // Вывести стек вызовов
     function s_trace(int $index = 0)
@@ -203,7 +204,7 @@ if (!function_exists('s_dd')) {
         if (Terminal::has()) {
             foreach ($traces as $trace) {
                 if (array_key_exists('file', $trace)) {
-                    Terminal::writeLn('<file>' . FsTransform::get($trace['file']) . ':' . $trace['line'] . '</>');
+                    Terminal::writeLn('<File>' . FsTransform::get($trace['file']) . ':' . $trace['line'] . '</>');
                 } else {
                     if (array_key_exists('class', $trace)) {
                         Terminal::writeLn($trace['class'] . $trace['type'] . $trace['function']);
@@ -247,10 +248,10 @@ if (!function_exists('s_dd')) {
         if (Terminal::has()) {
             Terminal::writeLn('<title>' . $title . '</>');
             Terminal::writeLn('Сообщение: <error>' . $e->getMessage() . '</>');
-            Terminal::writeLn('  Файл: <file>' . $e->getFile() . '</>:' . $e->getLine());
+            Terminal::writeLn('  Файл: <File>' . $e->getFile() . '</>:' . $e->getLine());
             Terminal::writeLn('Стек вызовов:');
             foreach ($e->getTrace() as $trace) {
-                Terminal::writeLn('  <file>' . Log::trace_file($trace) . '</>:' . Log::trace_line($trace));
+                Terminal::writeLn('  <File>' . Log::trace_file($trace) . '</>:' . Log::trace_line($trace));
             }
             // Вывести справочное сообщение
             Terminal::writeLn('');

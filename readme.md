@@ -2,7 +2,7 @@
 
 Содержит функции **s_dd** (аналог [dd](https://laravel.com/docs/master/helpers#method-dd) ) и **s_dump** (аналог [dump](https://laravel.com/docs/master/helpers#method-dump)) с выводом места вызова данных функций. Чтобы удобно было удалять вызовы когда они не нужны.
 
-![](docs/dump.png)
+![](example/dump.png)
 
 А также функцию **s_dump_error** для вывода информации о возникшем исключении.
 ```php
@@ -20,4 +20,4 @@
     }
 ```
 
-![](docs/exception.png)
+![](example/exception.png)
