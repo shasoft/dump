@@ -2,7 +2,7 @@
 
 namespace Shasoft\Dump;
 
-use Shasoft\Console\Console;
+use Shasoft\Terminal\Terminal;
 use Shasoft\Filesystem\FsTransform;
 
 class Log
@@ -13,7 +13,7 @@ class Log
         register_shutdown_function(function () {
             $error = error_get_last();
             if (!is_null($error)) {
-                Console::writeLn('<error>Error</>');
+                Terminal::writeLn('<error>Error</>');
                 s_dump($error);
                 exit(666);
             }
@@ -37,9 +37,9 @@ class Log
                     E_DEPRECATED => 'E_DEPRECATED',
                     E_USER_DEPRECATED => 'E_USER_DEPRECATED'
                 );
-                if (Console::is()) {
-                    Console::writeLn('<warning>' . $errors[$errno] . '</>:  ' . $message);
-                    Console::writeLn('    <file>' . FsTransform::get($errorFile) . '</>:' . $errorLine);
+                if (Terminal::has()) {
+                    Terminal::writeLn('<warning>' . $errors[$errno] . '</>:  ' . $message);
+                    Terminal::writeLn('    <file>' . FsTransform::get($errorFile) . '</>:' . $errorLine);
                 } else {
                     s_dump($errors[$errno], FsTransform::get($errorFile));
                 }
@@ -49,7 +49,7 @@ class Log
     // Вывести ошибку
     public static function error(string $text, int $skip = 0): void
     {
-        $hasConsole = Console::is();
+        $hasConsole = Terminal::has();
         // Установить пропуск текущего вызова
         $skip++;
         $traces = debug_backtrace();
@@ -63,10 +63,10 @@ class Log
                     $fileError = $file;
                     $lineError = $line;
                     if ($hasConsole) {
-                        Console::writeLn('<error>Ошибка!</>');
-                        Console::writeLn("\n" . $text . "\n");
-                        Console::writeLn('  Файл: <file>' . $file . '</>:' . $line);
-                        Console::writeLn('Стек вызовов:');
+                        Terminal::writeLn('<error>Ошибка!</>');
+                        Terminal::writeLn("\n" . $text . "\n");
+                        Terminal::writeLn('  Файл: <file>' . $file . '</>:' . $line);
+                        Terminal::writeLn('Стек вызовов:');
                     } else {
                         echo "<div>";
                         echo '<h3 style="color:red">Ошибка!</h3>';
@@ -77,7 +77,7 @@ class Log
                     }
                 }
                 if ($hasConsole) {
-                    Console::writeLn('  Файл: <file>' . $file . '</>:' . $line);
+                    Terminal::writeLn('  Файл: <file>' . $file . '</>:' . $line);
                 } else {
                     echo '<div style="padding-left:16px">Файл: <file>' . $file . '</>:' . $line . '</div>';
                 }
@@ -87,10 +87,10 @@ class Log
         // Вывести справочное сообщение
         /*
         if ($hasConsole) {
-            Console::writeLn('');
-            Console::writeLn('В <title>VSCode</>:');
-            Console::writeLn(' 1. Нажмите <info>Ctrl+P</> и <info>Ctrl+V</> для перехода к файлу');
-            Console::writeLn(' 2. Нажмите <info>Ctrl+G</> и введите номер строки <info>' . $lineError . '</> для перехода к строке');
+            Terminal::writeLn('');
+            Terminal::writeLn('В <title>VSCode</>:');
+            Terminal::writeLn(' 1. Нажмите <info>Ctrl+P</> и <info>Ctrl+V</> для перехода к файлу');
+            Terminal::writeLn(' 2. Нажмите <info>Ctrl+G</> и введите номер строки <info>' . $lineError . '</> для перехода к строке');
             // Копировать в буфер обмена
             Console::copyToClipboard($fileError);
         }
@@ -101,20 +101,20 @@ class Log
     // Вывод
     protected static function _print(\Exception|\Error $e)
     {
-        if (Console::is()) {
-            Console::writeLn('Ошибка: <error>' . $e->getMessage() . '</>');
-            Console::writeLn('  Файл: <file>' . $e->getFile() . '</>:' . $e->getLine());
-            Console::copyToClipboard($e->getFile());
-            Console::writeLn('Стек вызовов:');
+        if (Terminal::has()) {
+            Terminal::writeLn('Ошибка: <error>' . $e->getMessage() . '</>');
+            Terminal::writeLn('  Файл: <file>' . $e->getFile() . '</>:' . $e->getLine());
+            //Console::copyToClipboard($e->getFile());
+            Terminal::writeLn('Стек вызовов:');
             foreach ($e->getTrace() as $trace) {
-                Console::writeLn('  <file>' . self::trace_file($trace) . '</>:' . self::trace_line($trace));
+                Terminal::writeLn('  <file>' . self::trace_file($trace) . '</>:' . self::trace_line($trace));
             }
             /*
             // Вывести справочное сообщение
-            Console::writeLn('');
-            Console::writeLn('В <title>VSCode</>:');
-            Console::writeLn(' 1. Нажмите <info>Ctrl+P</> и <info>Ctrl+V</> для перехода к файлу');
-            Console::writeLn(' 2. Нажмите <info>Ctrl+G</> и введите номер строки <info>' . $e->getLine() . '</> для перехода к строке');
+            Terminal::writeLn('');
+            Terminal::writeLn('В <title>VSCode</>:');
+            Terminal::writeLn(' 1. Нажмите <info>Ctrl+P</> и <info>Ctrl+V</> для перехода к файлу');
+            Terminal::writeLn(' 2. Нажмите <info>Ctrl+G</> и введите номер строки <info>' . $e->getLine() . '</> для перехода к строке');
             // Копировать в буфер обмена
             Console::copyToClipboard(FsTransform::get($e->getFile()));
             //*/
