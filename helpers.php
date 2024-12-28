@@ -104,8 +104,8 @@ if (!function_exists('s_dd')) {
         if (is_callable($fn)) {
             if (empty($args)) {
                 if ($isConsole) {
-                    Terminal::writeLn('<BgFail>Не указаны переменные для вывода</>');
-                    Terminal::writeLn('<BgFail>No variables specified for output</>');
+                    Terminal::writeLn('<Fail>Не указаны переменные для вывода</>');
+                    Terminal::writeLn('<Fail>No variables specified for output</>');
                 } else {
                     echo '<div style="color:red">Не указаны переменные для вывода</div>';
                     echo '<div style="color:red">No variables specified for output</div>';
