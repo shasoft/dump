@@ -85,7 +85,6 @@ if (!function_exists('s_dd')) {
         // Получить номер строки
         $trace = s_get_trace_call(2 + $skipTraces);
         if ($trace !== false) {
-
             if ($isConsole) {
                 /*
                 if (is_string($fn) && $fn == 'dd') {
@@ -103,7 +102,15 @@ if (!function_exists('s_dd')) {
             }
         }
         if (is_callable($fn)) {
-            call_user_func_array($fn, $args);
+            if (empty($args)) {
+                if ($isConsole) {
+                } else {
+                    echo '<div style="color:red">Не указаны переменные для вывода</div>';
+                    echo '<div style="color:red">No variables specified for output</div>';
+                }
+            } else {
+                call_user_func_array($fn, $args);
+            }
         }
         if ($isConsole) {
             Terminal::writeLn($colorConsole . '*' . str_repeat('<', 80) . '</>');
