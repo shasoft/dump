@@ -22,3 +22,4 @@ CHANGE LOG
 
 ## v1.1
 * Перешёл на новый пакет вывода в консоль [shasoft/terminal-write-php](https://github.com/shasoft/terminal-write-php)
+* Доработал некоторые функции
