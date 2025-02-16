@@ -6,6 +6,7 @@ use Shasoft\Filesystem\Path;
 use Shasoft\Terminal\Terminal;
 use Shasoft\Filesystem\FsTransform;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
 if (!function_exists('s_dd')) {
@@ -149,23 +150,58 @@ if (!function_exists('s_dd')) {
             }
         }, $args);
     }
+
+    class SCliDumper extends CliDumper
+    {
+        public function s_supportsColors(): bool
+        {
+            return $this->supportsColors();
+        }
+    }
+    function s_my_dump(...$args): void
+    {
+        $isConsole = Terminal::has();
+        if ($isConsole) {
+            // "Танцы с бубном" чтобы буферизировать вывод
+            // Цвета поддерживаются в режиме по умолчанию?
+            $envHasRemove = false;
+            $envName = 'TERM_PROGRAM';
+            $sdumper = new SCliDumper;
+            if ($sdumper->s_supportsColors()) {
+                $envHasRemove = (getenv($envName) === false);
+                putenv($envName . '=Hyper');
+            }
+            // Установить переменную чтобы вывродилось "в цвете"
+            $cloner = new VarCloner();
+            $dumper = new CliDumper();
+            foreach ($args as $arg) {
+                $str = $dumper->dump($cloner->cloneVar($arg), true);
+                echo $str;
+            }
+            if ($envHasRemove) {
+                putenv($envName);
+            }
+        } else {
+            dump(...$args);
+        }
+    }
     // Функция отладки
     function s_dd(...$args): void
     {
-        s_call_fn('dump', $args);
+        s_call_fn('s_my_dump', $args);
         exit(1);
     }
     // Функция отладки по условию
     function s_dump_has($has, ...$args): void
     {
         if ($has) {
-            s_call_fn('dump', $args);
+            s_call_fn('s_my_dump', $args);
         }
     }
     // Функция отладки
     function s_dump(...$args): void
     {
-        s_call_fn('dump', $args);
+        s_call_fn('s_my_dump', $args);
     }
     // Получить переменные в виде HTMl кода
     function s_dump_html(...$args): string
