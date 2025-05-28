@@ -125,7 +125,7 @@ class Log
         exit(1);
     }
     // Установить обработчик ошибок
-    public static function  set_error_handler(\Closure $cb): void
+    public static function set_error_handler(\Closure $cb): void
     {
         try {
             // Вызвать работу программы

@@ -145,8 +145,13 @@ if (!function_exists('s_dd')) {
     function s_print(...$args): void
     {
         s_call_fn(function (...$args) {
+            $isConsole = Terminal::has();
             foreach ($args as $arg) {
-                Terminal::writeLn("\t" . (string)$arg);
+                if ($isConsole) {
+                    Terminal::writeLn("\t" . (string)$arg);
+                } else {
+                    echo '<div style="padding:4px">' . (string)$arg . '</div>';
+                }
             }
         }, $args);
     }
