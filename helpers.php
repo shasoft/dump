@@ -244,7 +244,7 @@ if (!function_exists('s_dd')) {
         exit(1);
     }
     // Вывести стек вызовов
-    function s_trace(int $index = 0)
+    function s_trace(int $index = 0, bool $onlyFileLine = false)
     {
         $traces = \debug_backtrace(0);
         if ($index > 0) {
@@ -263,6 +263,11 @@ if (!function_exists('s_dd')) {
             }
         } else {
             array_shift($traces);
+            if ($onlyFileLine) {
+                $traces = array_map(function (array $item) {
+                    return ($item['file'] ?? '?') . ':' . ($item['line'] ?? '?');
+                }, $traces);
+            }
             s_call_fn('dump', [$traces]);
         }
     }
