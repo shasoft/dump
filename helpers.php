@@ -166,6 +166,7 @@ if (!function_exists('s_dd')) {
     function s_my_dump(...$args): void
     {
         $isConsole = Terminal::has();
+        //$isConsole = true;
         if ($isConsole) {
             // "Танцы с бубном" чтобы буферизировать вывод
             // Цвета поддерживаются в режиме по умолчанию?
